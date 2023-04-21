@@ -13,7 +13,7 @@ public static class ColorUtils
 
     public static int MixMapColors(int color1, int color2, int rate1 = 1, int rate2 = 1)
     {
-        return color1 / (rate1 / (rate1 + rate2)) + color2 / (rate2 / (rate1 + rate2));
+        return (color1 * rate1) / (rate1 + rate2) + (color2 * rate2 / (rate1 + rate2));
         //return (color1 + color2) / 2;
     }
 
