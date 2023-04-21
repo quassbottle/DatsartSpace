@@ -25,13 +25,23 @@ public static class ColorUtils
         return (red, green, blue);
     }
 
-    public static bool AreSimilar(int color1, int color2, int delta)
+    public static bool EverySimilar(int color1, int color2, int delta)
     {
         var rgb1 = GetRgb(color1);
         var rgb2 = GetRgb(color2);
 
         return Math.Abs(rgb1.Item1 - rgb2.Item1) <= delta &&
                Math.Abs(rgb1.Item2 - rgb2.Item2) <= delta &&
+               Math.Abs(rgb1.Item3 - rgb2.Item3) <= delta;
+    }
+    
+    public static bool AnySimilar(int color1, int color2, int delta)
+    {
+        var rgb1 = GetRgb(color1);
+        var rgb2 = GetRgb(color2);
+
+        return Math.Abs(rgb1.Item1 - rgb2.Item1) <= delta ||
+               Math.Abs(rgb1.Item2 - rgb2.Item2) <= delta ||
                Math.Abs(rgb1.Item3 - rgb2.Item3) <= delta;
     }
 }
