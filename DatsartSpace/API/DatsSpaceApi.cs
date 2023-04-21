@@ -26,7 +26,7 @@ public class DatsSpaceApi
         {
             BaseAddress = new Uri("http://api.datsart.dats.team/")
         };
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "643cd453323f8643cd453323fa");
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
         Stages = new DatsArtStages(_httpClient);
         Ballista = new DatsArtBallista(_httpClient);
