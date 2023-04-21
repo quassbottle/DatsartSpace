@@ -20,8 +20,11 @@
     }
 
     var currentState = await Model.Api.Stages.GetInfoAsync();
+    var colorsInfo = await Model.Api.Colors.GetColorsInfo();
 }
+
 <script>
+
     window.addEventListener("click", (event) => {
        if (event.target.classList.contains("pickable-color")) {
            let id = event.target.getAttribute("data-id") - 0;
@@ -67,13 +70,15 @@
 
 <div class="card">
     <div class="card-header">
-        Colors Storage
+        Colors Storage (Colors: @colorsInfo.Colors, Amount: @colorsInfo.Amount)
     </div>
-    <div class="card-body text-center">
+    <div class="card-body text-center" data-bs-spy="scroll" data-bs-target="#color-storage">
+        <div style="position: relative" id="color-storage">
         @foreach (var color in Model.ColorsAvailable)
         {
             <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
         }
+        </div>
     </div>
 </div>
 
