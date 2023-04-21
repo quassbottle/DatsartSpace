@@ -161,7 +161,7 @@ public class DatsSpaceApi
             _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/ballista/");
         }
         
-        public async Task<QueueResponse> ShootAsync(int angleHorizontal, int angleVertical, int power, Dictionary<int, int> colors)
+        public async Task<QueueResponse> ShootAsync(float angleHorizontal, float angleVertical, float power, Dictionary<int, int> colors)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(angleHorizontal + ""), "angleHorizontal");
