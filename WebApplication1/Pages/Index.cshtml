@@ -4,14 +4,29 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
-    var result = await Model.Api.Factory.GenerateAsync();
-    var colors = result.Item1;
+
+    var generateResult = await Model.Api.Factory.GenerateAsync();
+    IndexModel.GeneratedTick = generateResult.Item2;
+    Model.GeneratedColors = generateResult.Item1;
+    var colors = Model.GeneratedColors;
+
+    try
+    {
+        Model.ColorsAvailable = await Model.Api.Colors.GetColorsAmountAsync();
+    }
+    catch
+    {
+        Model.ColorsAvailable = new Dictionary<string, int>();
+    }
+
+    var currentState = await Model.Api.Stages.GetInfoAsync();
 }
 <script>
     window.addEventListener("click", (event) => {
        if (event.target.classList.contains("pickable-color")) {
            let id = event.target.getAttribute("data-id") - 0;
            document.getElementById("colorId").value = id;
+           document.getElementById("submit-pick").click();
            
            @*let data = new FormData();
            data.append("colorId", id + "");
@@ -25,6 +40,20 @@
 
 <div class="card">
     <div class="card-header">
+        Current Canvas
+    </div>
+    <div class="card-body row">
+        <div class="col">
+            <img src="@currentState.SelectedImage.Url"/>
+        </div>
+        <div class="col">
+            <img src="@currentState.Canvas.Url"/>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
         Color Factory
     </div>
     <div class="card-body text-center" id="color-factory">
@@ -35,7 +64,7 @@
     <form method="post">
         <div class="input-group mb-3">
             <input class="form-control" id="colorId" type="number" name="colorId" min="1" max="3"/>
-            <button class="btn btn-outline-secondary" type="submit">Submit</button>
+            <button class="btn btn-outline-secondary" id="submit-pick" type="submit">Submit</button>
         </div>
     </form>
 </div>
@@ -45,7 +74,10 @@
         Colors Storage
     </div>
     <div class="card-body text-center">
-        
+        @foreach (var color in Model.ColorsAvailable)
+        {
+            <div class="pickable-color" style="background: #@ColorConverter.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
+        }
     </div>
 </div>
 

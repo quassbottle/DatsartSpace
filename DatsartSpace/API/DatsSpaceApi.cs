@@ -66,7 +66,7 @@ public class DatsSpaceApi
     
         public async Task<CurrentLevelResponse> GetInfoAsync()
         {
-            var result = await _httpClient.PostAsync("info", null);
+            var result = await _httpClient.PostAsync("art/stage/info", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<CurrentLevelResponse>(json["response"].ToString());
             return response;
@@ -74,7 +74,7 @@ public class DatsSpaceApi
     
         public async Task<QueueResponse> FinishLevelAsync()
         {
-            var result = await _httpClient.PostAsync("finish", null);
+            var result = await _httpClient.PostAsync("art/stage/finish", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<QueueResponse>(json["response"].ToString());
             return response;
@@ -99,11 +99,11 @@ public class DatsSpaceApi
         }
         
         // TODO: я не ебу, работает ли оно вообще, потому что там нужно tick передавать еще судя по докам
-        public async Task<PickResponse> PickAsync(int num)
+        public async Task<PickResponse> PickAsync(int num, long? tick = null)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(num + ""), "num");
-            //content.Add(new StringContent(tick + ""), "tick");
+            content.Add(new StringContent((tick ?? (await new DatsArtState(_httpClient).GetTickAsync()).Queue.Id) + ""), "tick");
 
             var result = await _httpClient.PostAsync("art/factory/pick", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
