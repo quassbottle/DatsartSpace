@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatsartSpace", "DatsartSpac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{FCDEA8C8-C845-4F73-A794-F93B8A5A5D91}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorsGrinder", "ColorsGrinder\ColorsGrinder.csproj", "{4C3C71B9-41BB-4EFC-9A90-EEC95E48FF2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FCDEA8C8-C845-4F73-A794-F93B8A5A5D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCDEA8C8-C845-4F73-A794-F93B8A5A5D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCDEA8C8-C845-4F73-A794-F93B8A5A5D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3C71B9-41BB-4EFC-9A90-EEC95E48FF2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3C71B9-41BB-4EFC-9A90-EEC95E48FF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3C71B9-41BB-4EFC-9A90-EEC95E48FF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3C71B9-41BB-4EFC-9A90-EEC95E48FF2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

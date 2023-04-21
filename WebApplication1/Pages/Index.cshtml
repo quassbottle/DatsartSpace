@@ -1,6 +1,6 @@
 ﻿@page
 @using DatsartSpace.API
-@using WebApplication1.Utils
+@using DatsartSpace.Utils
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -42,13 +42,9 @@
     <div class="card-header">
         Current Canvas
     </div>
-    <div class="card-body row">
-        <div class="col">
-            <img src="@currentState.SelectedImage.Url"/>
-        </div>
-        <div class="col">
-            <img src="@currentState.Canvas.Url"/>
-        </div>
+    <div class="card-body">
+        <img class="mx-auto d-inline" src="@currentState.SelectedImage.Url"/>
+        <img class="mx-auto d-inline" src="@currentState.Canvas.Url"/>
     </div>
 </div>
 
@@ -57,9 +53,9 @@
         Color Factory
     </div>
     <div class="card-body text-center" id="color-factory">
-        <div class="pickable-color" data-id="1" style="background: #@ColorConverter.MapInfoToHex(colors.First.Color)">@colors.First.Amount</div>
-        <div class="pickable-color" data-id="2" style="background: #@ColorConverter.MapInfoToHex(colors.Second.Color)">@colors.Second.Amount</div>
-        <div class="pickable-color" data-id="3" style="background: #@ColorConverter.MapInfoToHex(colors.Third.Color)">@colors.Third.Amount</div>
+        <div class="pickable-color" data-id="1" style="background: #@ColorUtils.MapInfoToHex(colors.First.Color)">@colors.First.Amount</div>
+        <div class="pickable-color" data-id="2" style="background: #@ColorUtils.MapInfoToHex(colors.Second.Color)">@colors.Second.Amount</div>
+        <div class="pickable-color" data-id="3" style="background: #@ColorUtils.MapInfoToHex(colors.Third.Color)">@colors.Third.Amount</div>
     </div>
     <form method="post">
         <div class="input-group mb-3">
@@ -76,7 +72,7 @@
     <div class="card-body text-center">
         @foreach (var color in Model.ColorsAvailable)
         {
-            <div class="pickable-color" style="background: #@ColorConverter.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
+            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
         }
     </div>
 </div>

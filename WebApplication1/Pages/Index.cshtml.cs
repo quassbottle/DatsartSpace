@@ -24,7 +24,7 @@ public class IndexModel : PageModel
         Api = new DatsSpaceApi();
     }
 
-    public async void OnGet()
+    public void OnGet()
     {
         
     }

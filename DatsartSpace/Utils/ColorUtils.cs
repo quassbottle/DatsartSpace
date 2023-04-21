@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Utils;
+﻿namespace DatsartSpace.Utils;
 
-public static class ColorConverter
+public static class ColorUtils
 {
     public static string MapInfoToHex(int mapInfo)
     {
@@ -9,5 +9,10 @@ public static class ColorConverter
         int blue = mapInfo - red * 65536 - green * 256;
 
         return red.ToString("X") + green.ToString("X") + blue.ToString("X");
+    }
+
+    public static int MixMapColors(int color1, int color2)
+    {
+        return (color1 + color2) / 2;
     }
 }

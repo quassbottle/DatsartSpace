@@ -25,8 +25,5 @@ var result = await httpClient.PostAsync("art/stage/next-start", content);
 Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 
 var api = new DatsSpaceApi();
-while (true)
-{
-    var result = await api.Factory.GenerateAsync();
-    Console.WriteLine(JsonConvert.SerializeObject(result));
-}
+var result = await api.Stages.GetInfoAsync();
+Console.WriteLine(JsonConvert.SerializeObject(result));
