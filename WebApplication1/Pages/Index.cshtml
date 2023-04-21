@@ -1,0 +1,51 @@
+﻿@page
+@using DatsartSpace.API
+@using WebApplication1.Utils
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    var result = await Model.Api.Factory.GenerateAsync();
+    var colors = result.Item1;
+}
+<script>
+    window.addEventListener("click", (event) => {
+       if (event.target.classList.contains("pickable-color")) {
+           let id = event.target.getAttribute("data-id") - 0;
+           document.getElementById("colorId").value = id;
+           
+           @*let data = new FormData();
+           data.append("colorId", id + "");
+           fetch("http://localhost:5184/", {
+               method: "post",
+               body: data
+               }).then(response => response.text()).then(html => console.log(html));*@
+       }
+    });
+</script>
+
+<div class="card">
+    <div class="card-header">
+        Color Factory
+    </div>
+    <div class="card-body text-center" id="color-factory">
+        <div class="pickable-color" data-id="1" style="background: #@ColorConverter.MapInfoToHex(colors.First.Color)">@colors.First.Amount</div>
+        <div class="pickable-color" data-id="2" style="background: #@ColorConverter.MapInfoToHex(colors.Second.Color)">@colors.Second.Amount</div>
+        <div class="pickable-color" data-id="3" style="background: #@ColorConverter.MapInfoToHex(colors.Third.Color)">@colors.Third.Amount</div>
+    </div>
+    <form method="post">
+        <div class="input-group mb-3">
+            <input class="form-control" id="colorId" type="number" name="colorId" min="1" max="3"/>
+            <button class="btn btn-outline-secondary" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Colors Storage
+    </div>
+    <div class="card-body text-center">
+        
+    </div>
+</div>
+

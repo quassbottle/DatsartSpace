@@ -1,12 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.ComponentModel;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
 using DatsartSpace.API;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 /*
 var httpClient = new HttpClient
@@ -22,30 +21,12 @@ content.Add(new StringContent("5"), "imageId");
 
 Console.WriteLine(content.Headers);
 
-var result = await httpClient.GetAsync("/art/factory/generate");
+var result = await httpClient.PostAsync("art/stage/next-start", content);
 Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 
-var url = "http://s.datsart.dats.team/game/image/227/59.png";
-using var wc = new WebClient();
-using var stream = wc.OpenRead(url);
-using var image = new Bitmap(stream);
-int[] colors = {16777215};
-for (int y = 0; y < image.Height; y++)
+var api = new DatsSpaceApi();
+while (true)
 {
-    for (int x = 0; x < image.Width; x++)
-    {
-        var color = image.GetPixel(x, y);
-        int colorValue = color.ToArgb() * -1;
-
-        if (!colors.Contains(colorValue))
-            colors = colors.Append(colorValue).ToArray();
-    }
-
-    var api = new DatsSpaceApi();
     var result = await api.Factory.GenerateAsync();
-
-    Console.WriteLine(result.Item1.First.Color);
-    Console.WriteLine(result.Item1.Second.Color);
-    Console.WriteLine(result.Item1.Third.Color);
-    Console.WriteLine(result.Item2.tick);
+    Console.WriteLine(JsonConvert.SerializeObject(result));
 }
