@@ -42,12 +42,11 @@ public class DatsSpaceApi
         public DatsArtStages(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/stage/");
         }
         
         public async Task<NextResponse> GetNextLevelAsync()
         {
-            var result = await _httpClient.PostAsync("next", null);
+            var result = await _httpClient.PostAsync("art/stage/next", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<NextResponse>(json["response"].ToString());
             return response;
@@ -59,7 +58,7 @@ public class DatsSpaceApi
             content.Add(new StringContent(imageId + ""), "imageId");
             content.Headers.Add("Content-Disposition", "form-data; name=\"imageId\" 5");
 
-            var result = await _httpClient.PostAsync("next-start", content);
+            var result = await _httpClient.PostAsync("art/stage/next-start", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<QueueResponse>(json["response"].ToString());
             return response;
@@ -89,12 +88,11 @@ public class DatsSpaceApi
         public DatsArtFactory(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/factory/");
         }
         
         public async Task<GenerateResponse> GenerateAsync()
         {
-            var result = await _httpClient.PostAsync("generate", null);
+            var result = await _httpClient.PostAsync("art/factory/generate", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<GenerateResponse>(json["response"].ToString());
             return response;
@@ -106,7 +104,7 @@ public class DatsSpaceApi
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(num + ""), "num");
 
-            var result = await _httpClient.PostAsync("pick", content);
+            var result = await _httpClient.PostAsync("art/factory/pick", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<PickResponse>(json["response"].ToString());
             return response;
@@ -120,12 +118,11 @@ public class DatsSpaceApi
         public DatsArtColors(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/colors/");
         }
         
         public async Task<InfoResponse> GetNextLevelAsync()
         {
-            var result = await _httpClient.PostAsync("info", null);
+            var result = await _httpClient.PostAsync("art/colors/info", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<InfoResponse>(json["response"].ToString());
             return response;
@@ -136,7 +133,7 @@ public class DatsSpaceApi
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(color + ""), "color");
 
-            var result = await _httpClient.PostAsync("amount", content);
+            var result = await _httpClient.PostAsync("art/colors/amount", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = json["response"].Value<int>();
             return response;
@@ -144,7 +141,7 @@ public class DatsSpaceApi
         
         public async Task<Dictionary<string, int>> GetColorsAmountAsync()
         {
-            var result = await _httpClient.PostAsync("list", null);
+            var result = await _httpClient.PostAsync("art/colors/list", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<Dictionary<string, int>>(json["response"].ToString());
             return response;
@@ -158,7 +155,6 @@ public class DatsSpaceApi
         public DatsArtBallista(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/ballista/");
         }
         
         public async Task<QueueResponse> ShootAsync(float angleHorizontal, float angleVertical, float power, Dictionary<int, int> colors)
@@ -172,7 +168,7 @@ public class DatsSpaceApi
                 content.Add(new StringContent(color.Value + ""), $"colors[{color.Key}]");
             }
 
-            var result = await _httpClient.PostAsync("shoot", content);
+            var result = await _httpClient.PostAsync("art/ballista/shoot", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<QueueResponse>(json["response"].ToString());
             return response;
@@ -186,12 +182,11 @@ public class DatsSpaceApi
         public DatsArtState(HttpClient client)
         {
             _httpClient = client;
-            _httpClient.BaseAddress = new Uri(_httpClient.BaseAddress, "art/state/");
         }
         
         public async Task<QueueResponse> GetTickAsync()
         {
-            var result = await _httpClient.PostAsync("tick", null);
+            var result = await _httpClient.PostAsync("art/state/tick", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<QueueResponse>(json["response"].ToString());
             return response;
@@ -202,7 +197,7 @@ public class DatsSpaceApi
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(id + ""), "id");
 
-            var result = await _httpClient.PostAsync("queue", content);
+            var result = await _httpClient.PostAsync("art/state/queue", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<QueueStateResponse>(json["response"].ToString());
             return response;
