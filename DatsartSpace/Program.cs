@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using DatsartSpace.API;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 /*
 var httpClient = new HttpClient
@@ -22,6 +24,6 @@ Console.WriteLine(content.Headers);
 var result = await httpClient.PostAsync("art/stage/next-start", content);
 Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 
-var api = new DatsSpace();
-var result = await api.GetNextLevelAsync();
-Console.WriteLine();
+var api = new DatsSpaceApi();
+var result = await api.Stages.GetInfoAsync();
+Console.WriteLine(JsonConvert.SerializeObject(result));
