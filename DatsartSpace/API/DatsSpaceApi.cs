@@ -90,19 +90,21 @@ public class DatsSpaceApi
             _httpClient = client;
         }
         
-        public async Task<GenerateResponse> GenerateAsync()
+        public async Task<(GenerateResponse, ColorInfo)> GenerateAsync()
         {
             var result = await _httpClient.PostAsync("art/factory/generate", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<GenerateResponse>(json["response"].ToString());
-            return response;
+            var info = JsonConvert.DeserializeObject<ColorInfo>(json["info"].ToString());
+            return (response, info);
         }
         
         // TODO: я не ебу, работает ли оно вообще, потому что там нужно tick передавать еще судя по докам
-        public async Task<PickResponse> PickAsync(int num)
+        public async Task<PickResponse> PickAsync(int num, string tick)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(num + ""), "num");
+            content.Add(new StringContent(tick + ""), "tick");
 
             var result = await _httpClient.PostAsync("art/factory/pick", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
