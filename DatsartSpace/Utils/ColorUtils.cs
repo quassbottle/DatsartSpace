@@ -11,9 +11,10 @@ public static class ColorUtils
         return red.ToString("X") + green.ToString("X") + blue.ToString("X");
     }
 
-    public static int MixMapColors(int color1, int color2)
+    public static int MixMapColors(int color1, int color2, int rate1 = 1, int rate2 = 1)
     {
-        return (color1 + color2) / 2;
+        return color1 / (rate1 / (rate1 + rate2)) + color2 / (rate2 / (rate1 + rate2));
+        //return (color1 + color2) / 2;
     }
 
     public static (int, int, int) GetRgb(int mapInfo)

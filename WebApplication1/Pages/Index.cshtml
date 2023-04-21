@@ -74,7 +74,7 @@
     </div>
     <div class="card-body text-center" data-bs-spy="scroll" data-bs-target="#color-storage">
         <div style="position: relative" id="color-storage">
-        @foreach (var color in Model.ColorsAvailable)
+        @foreach (var color in Model.ColorsAvailable.OrderByDescending(pair => pair.Value))
         {
             <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
         }
