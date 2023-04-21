@@ -90,13 +90,12 @@ public class DatsSpaceApi
             _httpClient = client;
         }
         
-        public async Task<(GenerateResponse, ColorInfo)> GenerateAsync()
+        public async Task<(GenerateResponse, long)> GenerateAsync()
         {
             var result = await _httpClient.PostAsync("art/factory/generate", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
             var response = JsonConvert.DeserializeObject<GenerateResponse>(json["response"].ToString());
-            var info = JsonConvert.DeserializeObject<ColorInfo>(json["info"].ToString());
-            return (response, info);
+            return (response, json["info"]["tick"].Value<long>());
         }
         
         // TODO: я не ебу, работает ли оно вообще, потому что там нужно tick передавать еще судя по докам
@@ -122,7 +121,7 @@ public class DatsSpaceApi
             _httpClient = client;
         }
         
-        public async Task<InfoResponse> GetNextLevelAsync()
+        public async Task<InfoResponse> GetColorsInfo()
         {
             var result = await _httpClient.PostAsync("art/colors/info", null);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
