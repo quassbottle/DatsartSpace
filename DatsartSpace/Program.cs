@@ -1,9 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Drawing;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using DatsartSpace;
 using DatsartSpace.API;
+using DatsartSpace.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -24,6 +27,13 @@ Console.WriteLine(content.Headers);
 var result = await httpClient.PostAsync("art/stage/next-start", content);
 Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 
+// var api = new DatsSpaceApi();
+// var result = await api.Ballista.ShootAsync(1, 1, 100,
+//     new Dictionary<int, int> {
+//     { 13320187, 1 }, { 2351959, 1 }
+// });
+// Console.WriteLine(JsonConvert.SerializeObject(result));
+
+
 var api = new DatsSpaceApi();
-var result = await api.Stages.GetInfoAsync();
-Console.WriteLine(JsonConvert.SerializeObject(result));
+var result = await api.State.GetQueueAsync(1682127011079277691);

@@ -1,14 +1,18 @@
 ﻿@page
 @using DatsartSpace.API
 @using DatsartSpace.Utils
+@using System.Drawing
+@using System.Text.RegularExpressions
 @model IndexModel
 @{
+    int dominantColorsCount = 5;
+    
     ViewData["Title"] = "Home page";
 
     var generateResult = await Model.Api.Factory.GenerateAsync();
     IndexModel.GeneratedTick = generateResult.Item2;
     Model.GeneratedColors = generateResult.Item1;
-    var colors = Model.GeneratedColors;
+    var generatedColors = Model.GeneratedColors;
 
     try
     {
@@ -21,6 +25,28 @@
 
     var currentState = await Model.Api.Stages.GetInfoAsync();
     var colorsInfo = await Model.Api.Colors.GetColorsInfo();
+
+    var image = new Bitmap(await (await new HttpClient().GetAsync(currentState.SelectedImage.Url)).Content.ReadAsStreamAsync());
+    
+    var colors = new List<int>();
+    for (int x = 0; x < image.Width; x++)
+    {
+        for (int y = 0; y < image.Height; y++)
+        {
+            int color = image.GetPixel(x, y).ToArgb() * -1;
+            if (color != 1)
+                colors.Add(image.GetPixel(x, y).ToArgb() * -1);
+        }
+    }
+    
+    var grouped = colors.GroupBy(val => val).Select(group => new
+    {
+        Value = group.Key,
+        Count = group.Count()
+    }).OrderByDescending(val => val.Count);
+    var groupedArray = grouped.ToArray();
+    
+    Console.WriteLine();
 }
 
 <script>
@@ -53,12 +79,24 @@
 
 <div class="card">
     <div class="card-header">
+        Canvas Dominant Colors
+    </div>
+    <div class="card-body text-center">
+        @for (int i = 0; i < dominantColorsCount; i++)
+        {
+            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(groupedArray[i].Value)">@groupedArray[i].Value - @groupedArray[i].Count</div>
+        }
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
         Color Factory
     </div>
     <div class="card-body text-center" id="color-factory">
-        <div class="pickable-color" data-id="1" style="background: #@ColorUtils.MapInfoToHex(colors.First.Color)">@colors.First.Amount</div>
-        <div class="pickable-color" data-id="2" style="background: #@ColorUtils.MapInfoToHex(colors.Second.Color)">@colors.Second.Amount</div>
-        <div class="pickable-color" data-id="3" style="background: #@ColorUtils.MapInfoToHex(colors.Third.Color)">@colors.Third.Amount</div>
+        <div class="pickable-color" data-id="1" style="background: #@ColorUtils.MapInfoToHex(generatedColors.First.Color)">@generatedColors.First.Amount</div>
+        <div class="pickable-color" data-id="2" style="background: #@ColorUtils.MapInfoToHex(generatedColors.Second.Color)">@generatedColors.Second.Amount</div>
+        <div class="pickable-color" data-id="3" style="background: #@ColorUtils.MapInfoToHex(generatedColors.Third.Color)">@generatedColors.Third.Amount</div>
     </div>
     <form method="post">
         <div class="input-group mb-3">
@@ -76,7 +114,7 @@
         <div style="position: relative" id="color-storage">
         @foreach (var color in Model.ColorsAvailable.OrderByDescending(pair => pair.Value))
         {
-            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(int.Parse(color.Key))">@color.Value</div>
+            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(int.Parse(color.Key))">@color.Key - @color.Value</div>
         }
         </div>
     </div>

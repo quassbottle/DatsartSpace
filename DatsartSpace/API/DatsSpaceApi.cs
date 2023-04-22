@@ -158,12 +158,12 @@ public class DatsSpaceApi
             _httpClient = client;
         }
         
-        public async Task<QueueResponse> ShootAsync(float angleHorizontal, float angleVertical, float power, Dictionary<int, int> colors)
+        public async Task<QueueResponse> ShootAsync(double angleHorizontal, double angleVertical, double power, Dictionary<int, int> colors)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(angleHorizontal + ""), "angleHorizontal");
             content.Add(new StringContent(angleVertical + ""), "angleVertical");
-            content.Add(new StringContent(power + ""), "power");
+            content.Add(new StringContent(power.ToString("F10").TrimEnd('0')), "power");
             foreach (var color in colors)
             {
                 content.Add(new StringContent(color.Value + ""), $"colors[{color.Key}]");
@@ -193,7 +193,7 @@ public class DatsSpaceApi
             return response;
         }
         
-        public async Task<QueueStateResponse> GetQueueAsync(int id)
+        public async Task<QueueStateResponse> GetQueueAsync(long id)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(id + ""), "id");
