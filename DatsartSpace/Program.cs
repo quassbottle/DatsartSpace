@@ -34,12 +34,12 @@ Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 // });
 // Console.WriteLine(JsonConvert.SerializeObject(result));
 
-
 var api = new DatsSpaceApi();
-var result = await api.Ballista.ShootAsync(0, 1, 500, new[]
+var ballista = new Ballista();
+var calc = ballista.Calculate(50, 125, 2, 250);
+var result = await api.Ballista.ShootAsync(calc.angleH, calc.angleV, calc.power, new[]
 {
     (16767779, 1),
     (7077751, 1)
 });
-var queue = await api.State.GetQueueAsync(1682156538367250466);
-Console.WriteLine(JsonConvert.SerializeObject(queue));
+Console.WriteLine(JsonConvert.SerializeObject(result));

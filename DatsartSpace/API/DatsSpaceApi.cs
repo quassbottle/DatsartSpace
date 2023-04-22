@@ -161,8 +161,8 @@ public class DatsSpaceApi
         public async Task<QueueResponse> ShootAsync(double angleHorizontal, double angleVertical, double power, (int, int)[] colors)
         {
             var content = new MultipartFormDataContent();
-            content.Add(new StringContent(angleHorizontal + ""), "angleHorizontal");
-            content.Add(new StringContent(angleVertical + ""), "angleVertical");
+            content.Add(new StringContent(angleHorizontal.ToString("F6").Replace(',','.')), "angleHorizontal");
+            content.Add(new StringContent(angleVertical.ToString("F6").Replace(',','.')), "angleVertical");
             content.Add(new StringContent(power.ToString("F6").Replace(',','.')), "power");
             foreach (var color in colors)
             {
