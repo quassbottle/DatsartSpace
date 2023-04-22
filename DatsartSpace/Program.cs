@@ -36,10 +36,10 @@ Console.WriteLine(await result.Content.ReadAsStringAsync()); */
 
 
 var api = new DatsSpaceApi();
-var result = await api.Ballista.ShootAsync(0, 45, 500, new[]
+var result = await api.Ballista.ShootAsync(0, 1, 500, new[]
 {
     (16767779, 1),
     (7077751, 1)
 });
-var queue = await api.State.GetQueueAsync(result.Queue.Id);
+var queue = await api.State.GetQueueAsync(1682156538367250466);
 Console.WriteLine(JsonConvert.SerializeObject(queue));

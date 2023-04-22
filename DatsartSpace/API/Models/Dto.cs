@@ -2,5 +2,6 @@
 
 public class Dto
 {
-    public Dictionary<string, int> Pots { get; set; }
+    public (string, int)[] Pots { get; set; }
+    public Shot Shot { get; set; }
 }

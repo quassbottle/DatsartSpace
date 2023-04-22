@@ -193,15 +193,15 @@ public class DatsSpaceApi
             return response;
         }
         
-        public async Task<QueueStateResponse[]> GetQueueAsync(long id)
+        public async Task<QueueStateResponse> GetQueueAsync(long id)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(id + ""), "id");
 
             var result = await _httpClient.PostAsync("art/state/queue", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
-            var response = JsonConvert.DeserializeObject<QueueStateResponse[]>(json["response"].ToString());
-            return response;
+            var first = JsonConvert.DeserializeObject<QueueStateResponse[]>(json["response"].ToString()).First();
+            return first;
         }
     }
 }

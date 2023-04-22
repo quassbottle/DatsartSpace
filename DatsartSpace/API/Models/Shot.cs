@@ -2,8 +2,8 @@
 
 public class Shot
 {
-    public double AngleHorizontal { get; set; }
-    public double AngleVertical { get; set; }
+    public int AngleHorizontal { get; set; }
+    public int AngleVertical { get; set; }
     public object ColorPot { get; set; }
-    public double Power { get; set; }
+    public int Power { get; set; }
 }
