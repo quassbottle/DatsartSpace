@@ -1,4 +1,6 @@
-﻿namespace DatsartSpace.Utils;
+﻿using System.Drawing;
+
+namespace DatsartSpace.Utils;
 
 public static class ColorUtils
 {
@@ -45,4 +47,39 @@ public static class ColorUtils
                Math.Abs(rgb1.Item2 - rgb2.Item2) <= delta ||
                Math.Abs(rgb1.Item3 - rgb2.Item3) <= delta;
     }
+
+    public static ColorCount[] GetDominantColors(Bitmap image)
+    {
+        var colors = new List<int>();
+        for (int x = 0; x < image.Width; x++)
+        {
+            for (int y = 0; y < image.Height; y++)
+            {
+                var color = image.GetPixel(x, y);
+                int r = color.R << 16;
+                int g = color.G << 8;
+                int b = color.B;
+                int rgb = r + g + b;
+
+                if (rgb != 16777215)
+                    colors.Add(rgb);
+            }
+        }
+    
+        var grouped = colors.GroupBy(val => val).Select(group => new ColorCount
+        {
+            Color = group.Key,
+            Count = group.Count()
+        }).OrderByDescending(val => val.Count);
+        var groupedArray = grouped.ToArray();
+        
+        return groupedArray;
+    }
+    
+}
+
+public class ColorCount
+{
+    public int Color { get; set; }
+    public int Count { get; set; }
 }

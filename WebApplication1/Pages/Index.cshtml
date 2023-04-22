@@ -14,44 +14,12 @@
     Model.GeneratedColors = generateResult.Item1;
     var generatedColors = Model.GeneratedColors;
 
-    try
-    {
-        Model.ColorsAvailable = await Model.Api.Colors.GetColorsAmountAsync();
-    }
-    catch
-    {
-        Model.ColorsAvailable = new Dictionary<string, int>();
-    }
-
     var currentState = await Model.Api.Stages.GetInfoAsync();
     var colorsInfo = await Model.Api.Colors.GetColorsInfo();
 
     var image = new Bitmap(await (await new HttpClient().GetAsync(currentState.SelectedImage.Url)).Content.ReadAsStreamAsync());
-    
-    var colors = new List<int>();
-    for (int x = 0; x < image.Width; x++)
-    {
-        for (int y = 0; y < image.Height; y++)
-        {
-            var color = image.GetPixel(x, y);
-            int r = color.R << 16;
-            int g = color.G << 8;
-            int b = color.B;
-            int rgb = r + g + b;
 
-            if (rgb != 16777215)
-                colors.Add(rgb);
-        }
-    }
-    
-    var grouped = colors.GroupBy(val => val).Select(group => new
-    {
-        Value = group.Key,
-        Count = group.Count()
-    }).OrderByDescending(val => val.Count);
-    var groupedArray = grouped.ToArray();
-    
-    Console.WriteLine();
+    var dominantColors = ColorUtils.GetDominantColors(image);
 }
 
 <script>
@@ -88,7 +56,7 @@
     <div class="card-body text-center">
         @for (int i = 0; i < dominantColorsCount; i++)
         {
-            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(groupedArray[i].Value)">@groupedArray[i].Value - @groupedArray[i].Count</div>
+            <div class="pickable-color" style="background: #@ColorUtils.MapInfoToHex(dominantColors[i].Color)">@dominantColors[i].Color - @dominantColors[i].Count</div>
         }
     </div>
 </div>
@@ -102,13 +70,24 @@
         <div class="pickable-color" data-id="2" style="background: #@ColorUtils.MapInfoToHex(generatedColors.Second.Color)">@generatedColors.Second.Amount</div>
         <div class="pickable-color" data-id="3" style="background: #@ColorUtils.MapInfoToHex(generatedColors.Third.Color)">@generatedColors.Third.Amount</div>
     </div>
-    <form method="post">
+    <form method="post" hidden="hidden">
         <div class="input-group mb-3">
             <input class="form-control" id="colorId" type="number" name="colorId" min="1" max="3"/>
             <button class="btn btn-outline-secondary" id="submit-pick" type="submit">Submit</button>
         </div>
     </form>
 </div>
+
+@{
+    try
+    {
+        Model.ColorsAvailable = await Model.Api.Colors.GetColorsAmountAsync();
+    }
+    catch
+    {
+        Model.ColorsAvailable = new Dictionary<string, int>();
+    }
+}
 
 <div class="card">
     <div class="card-header">

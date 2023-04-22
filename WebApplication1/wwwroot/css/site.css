@@ -26,6 +26,11 @@ body {
   border-radius: 10px;
 }
 
+#color-storage {
+  height: 30em;
+  overflow-y: scroll;
+}
+
 .pickable-color {
   cursor: pointer;
   margin: 10px;
