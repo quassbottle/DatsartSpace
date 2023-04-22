@@ -33,9 +33,14 @@
     {
         for (int y = 0; y < image.Height; y++)
         {
-            int color = image.GetPixel(x, y).ToArgb() * -1;
-            if (color != 1)
-                colors.Add(image.GetPixel(x, y).ToArgb() * -1);
+            var color = image.GetPixel(x, y);
+            int r = color.R << 16;
+            int g = color.G << 8;
+            int b = color.B;
+            int rgb = r + g + b;
+
+            if (rgb != 16777215)
+                colors.Add(rgb);
         }
     }
     
@@ -50,7 +55,6 @@
 }
 
 <script>
-
     window.addEventListener("click", (event) => {
        if (event.target.classList.contains("pickable-color")) {
            let id = event.target.getAttribute("data-id") - 0;
