@@ -158,15 +158,15 @@ public class DatsSpaceApi
             _httpClient = client;
         }
         
-        public async Task<QueueResponse> ShootAsync(double angleHorizontal, double angleVertical, double power, Dictionary<int, int> colors)
+        public async Task<QueueResponse> ShootAsync(double angleHorizontal, double angleVertical, double power, (int, int)[] colors)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(angleHorizontal + ""), "angleHorizontal");
             content.Add(new StringContent(angleVertical + ""), "angleVertical");
-            content.Add(new StringContent(power.ToString("F10").TrimEnd('0')), "power");
+            content.Add(new StringContent(power.ToString("F6").Replace(',','.')), "power");
             foreach (var color in colors)
             {
-                content.Add(new StringContent(color.Value + ""), $"colors[{color.Key}]");
+                content.Add(new StringContent(color.Item2 + ""), $"colors[{color.Item1}]");
             }
 
             var result = await _httpClient.PostAsync("art/ballista/shoot", content);
@@ -193,14 +193,14 @@ public class DatsSpaceApi
             return response;
         }
         
-        public async Task<QueueStateResponse> GetQueueAsync(long id)
+        public async Task<QueueStateResponse[]> GetQueueAsync(long id)
         {
             var content = new MultipartFormDataContent();
             content.Add(new StringContent(id + ""), "id");
 
             var result = await _httpClient.PostAsync("art/state/queue", content);
             var json = JObject.Parse(await result.Content.ReadAsStringAsync());
-            var response = JsonConvert.DeserializeObject<QueueStateResponse>(json["response"].ToString());
+            var response = JsonConvert.DeserializeObject<QueueStateResponse[]>(json["response"].ToString());
             return response;
         }
     }
